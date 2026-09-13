@@ -14,11 +14,14 @@ interface Props {
 const SITE_URL = "https://bhavleensingh.com";
 const OG_IMAGE = { url: `${SITE_URL}/bhavleen-singh.jpg`, width: 690, height: 1007 };
 
-// Fonts for above-the-fold text: the hero headline ("Bhavleen" / "Singh.") and intro paragraph.
+// Fonts for above-the-fold text: the hero headline ("Bhavleen" / "Singh."), intro paragraph,
+// and DM Mono for the nav, hero label and credentials (otherwise discovered only after CSS parses).
 const PRELOAD_FONTS = [
   "/fonts/playfair-display-normal-latin.woff2",
   "/fonts/playfair-display-italic-latin.woff2",
   "/fonts/source-serif-4-normal-latin.woff2",
+  "/fonts/dm-mono-normal-400-latin.woff2",
+  "/fonts/dm-mono-normal-500-latin.woff2",
 ];
 
 const { title, description, ogDescription = description, noindex = false, schema } = Astro.props;

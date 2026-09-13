@@ -285,9 +285,11 @@ const year = new Date().getFullYear();
                 <div class="section-label">SEO Specialist · Melbourne, Australia</div>
               </div>
 
+              {/* The headline and intro paragraph are the page's LCP candidates, so they paint
+                  immediately instead of fading in; the smaller hero elements keep their entrance. */}
               <h1
-                class="enter font-['Playfair_Display'] font-bold leading-[0.92] mt-4 mb-0"
-                style="--from: translateY(32px); --dur: 0.75s; --delay: 0.2s; --ease: cubic-bezier(0, 0, 0.58, 1); font-size: clamp(4rem, 9vw, 8.5rem); color: #1A1A1A"
+                class="font-['Playfair_Display'] font-bold leading-[0.92] mt-4 mb-0"
+                style="font-size: clamp(4rem, 9vw, 8.5rem); color: #1A1A1A"
               >
                 Bhavleen
                 <br />
@@ -299,8 +301,8 @@ const year = new Date().getFullYear();
               </div>
 
               <p
-                class="enter font-['Source_Serif_4'] text-lg md:text-xl leading-relaxed max-w-lg"
-                style="--from: translateY(20px); --dur: 0.6s; --delay: 0.55s; color: #6B6B6B"
+                class="font-['Source_Serif_4'] text-lg md:text-xl leading-relaxed max-w-lg"
+                style="color: #6B6B6B"
               >
                 Melbourne-based SEO professional with 10 years of hands-on experience helping businesses rank on Google, grow organic traffic, and turn search visibility into real revenue.
               </p>
@@ -840,7 +842,9 @@ const year = new Date().getFullYear();
   // ─── Header: solid background once the page has scrolled ───
   const header = document.getElementById("site-header")!;
   const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 48);
-  onScroll();
+  // Initial check (page reloaded mid-scroll) waits a frame: reading scrollY while the
+  // page is still being laid out forces a synchronous reflow.
+  requestAnimationFrame(onScroll);
   window.addEventListener("scroll", onScroll, { passive: true });
 
   // ─── Mobile menu ───
