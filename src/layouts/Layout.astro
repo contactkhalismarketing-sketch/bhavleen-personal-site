@@ -57,13 +57,37 @@ const canonical = new URL(Astro.url.pathname, SITE_URL).href;
     <!-- Lets CSS hide scroll-reveal content only when the script that reveals it can run. -->
     <script is:inline>document.documentElement.classList.add("js");</script>
 
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-CHC87EF4GD"></script>
+    <!-- Google tag (gtag.js). The page view is queued straight away, but the 170 KB library
+         is requested only once the page has loaded AND its first contentful paint has been
+         presented. As a plain async script it could finish before first paint, delaying LCP
+         and adding long tasks on slow phones. load alone isn't enough: on this small page it
+         can fire before the first paint. -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-CHC87EF4GD');
+      addEventListener('load', function () {
+        var requested = false;
+        function loadTag() {
+          if (requested) return;
+          requested = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-CHC87EF4GD';
+          document.head.appendChild(s);
+        }
+        try {
+          new PerformanceObserver(function (list, observer) {
+            if (list.getEntriesByName('first-contentful-paint').length) {
+              observer.disconnect();
+              setTimeout(loadTag, 0);
+            }
+          }).observe({ type: 'paint', buffered: true });
+        } catch (e) {}
+        // Fallback for browsers without Paint Timing, or a tab that hasn't painted yet.
+        setTimeout(loadTag, 3000);
+      });
     </script>
 
     {schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}
