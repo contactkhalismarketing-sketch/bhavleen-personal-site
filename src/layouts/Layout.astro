@@ -1,0 +1,71 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Social card copy, when it should differ from the meta description. */
+  ogDescription?: string;
+  noindex?: boolean;
+  /** JSON-LD structured data, embedded as a <script type="application/ld+json"> block. */
+  schema?: Record<string, unknown>;
+}
+
+const SITE_URL = "https://bhavleensingh.com";
+const OG_IMAGE = { url: `${SITE_URL}/bhavleen-singh.jpg`, width: 690, height: 1007 };
+
+// Fonts for above-the-fold text: the hero headline ("Bhavleen" / "Singh.") and intro paragraph.
+const PRELOAD_FONTS = [
+  "/fonts/playfair-display-normal-latin.woff2",
+  "/fonts/playfair-display-italic-latin.woff2",
+  "/fonts/source-serif-4-normal-latin.woff2",
+];
+
+const { title, description, ogDescription = description, noindex = false, schema } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Bhavleen Singh" />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_AU" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={OG_IMAGE.url} />
+    <meta property="og:image:width" content={String(OG_IMAGE.width)} />
+    <meta property="og:image:height" content={String(OG_IMAGE.height)} />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    {PRELOAD_FONTS.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
+
+    <!-- Lets CSS hide scroll-reveal content only when the script that reveals it can run. -->
+    <script is:inline>document.documentElement.classList.add("js");</script>
+
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-CHC87EF4GD"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CHC87EF4GD');
+    </script>
+
+    {schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

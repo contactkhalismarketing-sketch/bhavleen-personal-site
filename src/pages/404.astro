@@ -1,0 +1,26 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Page Not Found | Bhavleen Singh"
+  description="The page you are looking for doesn't exist. It may have been moved or deleted."
+  noindex
+>
+  <main class="min-h-screen flex items-center" style="background: #F8F5F0; color: #1A1A1A">
+    <div class="container py-20">
+      <div class="section-label">404 · Page Not Found</div>
+      <h1
+        class="font-['Playfair_Display'] font-bold leading-[0.92] mt-4 mb-0"
+        style="font-size: clamp(3rem, 7vw, 6rem); color: #1A1A1A"
+      >
+        Nothing <em class="italic" style="color: #C9873A">here.</em>
+      </h1>
+      <span class="amber-rule"></span>
+      <p class="font-['Source_Serif_4'] text-lg md:text-xl leading-relaxed max-w-lg mb-10" style="color: #6B6B6B">
+        Sorry, the page you are looking for doesn't exist. It may have been moved or deleted.
+      </p>
+      <a href="/" class="btn-primary">Back to Home</a>
+    </div>
+  </main>
+</Layout>

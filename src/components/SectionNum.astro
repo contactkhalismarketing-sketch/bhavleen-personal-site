@@ -1,0 +1,16 @@
+---
+// Oversized background section number
+interface Props {
+  num: string;
+}
+
+const { num } = Astro.props;
+---
+
+<span
+  class="absolute top-0 right-0 font-['Playfair_Display'] font-bold leading-none select-none pointer-events-none"
+  aria-hidden="true"
+  style="font-size: clamp(7rem, 18vw, 15rem); opacity: 0.04; color: #1A1A1A; line-height: 0.85"
+>
+  {num}
+</span>
